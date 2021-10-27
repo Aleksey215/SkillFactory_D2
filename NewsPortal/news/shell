@@ -1,0 +1,125 @@
+Python 3.8.10 (default, Sep 28 2021, 16:10:42)
+[GCC 9.3.0] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+(InteractiveConsole)
+
+>>> user1 = User.objects.create_user(username='Alex')
+>>> user2 = User.objects.create_user(username='Lena')
+
+>>> Author.objects.create(author_user=user1)
+<Author: Author object (1)>
+>>> Author.objects.create(author_user=user2)
+<Author: Author object (2)>
+
+>>> Category.objects.create(name='Sport')
+<Category: Category object (1)>
+>>> Category.objects.create(name='Math')
+<Category: Category object (2)>
+>>> Category.objects.create(name='IT')
+<Category: Category object (3)>
+>>> Category.objects.create(name='Politics')
+<Category: Category object (4)>
+
+>>> author1 = Author.objects.get(id=1)
+>>> author1
+<Author: Author object (1)>
+>>> author2 = Author.objects.get(id=2)
+>>> author2
+<Author: Author object (2)>
+
+>>> Post.objects.create(author=author1, view='AR', title='Article_1', text='some_big_text')
+<Post: Post object (1)>
+>>> Post.objects.create(author=author2, view='AR', title='Article_2', text='some_big_text2')
+<Post: Post object (2)>
+>>> Post.objects.create(author=author1, view='NW', title='News_1', text='some_news')
+<Post: Post object (3)>
+
+>>> Post.objects.get(id=3).text
+'some_news'
+
+>>> Post.objects.get(id=1).category.add(Category.objects.get(id=3))
+>>> Post.objects.get(id=1).category
+<django.db.models.fields.related_descriptors.create_forward_many_to_many_manager.<locals>.ManyRelatedManager object at 0x7f3b1a2f9610>
+>>> Post.objects.get(id=1)
+<Post: Post object (1)>
+
+>>> PostCategory.objects.create(post=Post.objects.get(id=1), category=Category.objects.get(id=3))
+<PostCategory: PostCategory object (2)>
+>>> PostCategory.objects.create(post=Post.objects.get(id=1), category=Category.objects.get(id=4))
+<PostCategory: PostCategory object (3)>
+
+>>> Post.objects.get(id=2).category.add(Category.objects.get(id=1))
+
+>>> PostCategory.objects.create(post=Post.objects.get(id=2), category=Category.objects.get(id=4))
+<PostCategory: PostCategory object (5)>
+>>> PostCategory.objects.create(post=Post.objects.get(id=3), category=Category.objects.get(id=2))
+<PostCategory: PostCategory object (6)>
+
+>>> Post.objects.get(id=3).category.add(Category.objects.get(id=3))
+
+>>> Comment.objects.create(post=Post.objects.get(id=1), user=Author.objects.get(id=1).author_user, text='Some Comment')
+<Comment: Comment object (1)>
+>>> Comment.objects.create(post=Post.objects.get(id=1), user=User.objects.get(id=3), text='Some Comment 1')
+<Comment: Comment object (2)>
+>>> Comment.objects.create(post=Post.objects.get(id=1), user=User.objects.get(id=4), text='Some Comment 1')
+<Comment: Comment object (3)>
+>>> Comment.objects.create(post=Post.objects.get(id=2), user=User.objects.get(id=3), text='Comment from Alex')
+<Comment: Comment object (4)>
+>>> Comment.objects.create(post=Post.objects.get(id=2), user=User.objects.get(id=4), text='Comment from Lena')
+<Comment: Comment object (5)>
+>>> Comment.objects.create(post=Post.objects.get(id=3), user=User.objects.get(id=4), text='Comment from Lena')
+<Comment: Comment object (6)>
+>>> Comment.objects.create(post=Post.objects.get(id=3), user=User.objects.get(id=3), text='Comment from Alex')
+<Comment: Comment object (7)>
+
+>>> post1 = Post.objects.get(id=1)
+>>> post2 = Post.objects.get(id=2)
+>>> post3 = Post.objects.get(id=3)
+
+>>> post1.like()
+>>> post1.like()
+>>> post2.like()
+>>> post2.like()
+>>> post2.like()
+>>> post3.like()
+>>> post3.like()
+>>> post1.like()
+>>> post1.like()
+>>> post1.like()
+>>> post1.dislike()
+
+>>> comment1 = Comment.objects.get(id=1)
+>>> comment2 = Comment.objects.get(id=2)
+>>> comment3 = Comment.objects.get(id=3)
+>>> comment4 = Comment.objects.get(id=4)
+>>> comment5 = Comment.objects.get(id=5)
+>>> comment6 = Comment.objects.get(id=6)
+>>> comment7 = Comment.objects.get(id=7)
+
+>>> comment7.like()
+>>> comment7.like()
+>>> comment6.like()
+>>> comment5.like()
+>>> comment5.like()
+>>> comment5.like()
+>>> comment4.like()
+>>> comment4.like()
+>>> comment4.dislike()
+>>> comment3.like()
+>>> comment2.like()
+>>> comment1.like()
+>>> comment1.like()
+>>> comment1.like()
+>>> comment1.like()
+>>> comment1.like()
+>>> comment1.dislike()
+
+>>> author1 = Author.objects.get(id=1)
+>>> author1.update_rating()
+>>> author1.author_rating
+26
+
+>>> Author.objects.get(id=2).update_rating()
+>>> Author.objects.get(id=2).author_rating
+14
+
