@@ -5,6 +5,53 @@ News
 {% endblock title %}
 
 {% block content %}
-<h1>Новость</h1>
-<h3>{{ post }}</h3>
+<h1>Новость ({{ post }}) </h1>
+<table>
+    <tr>
+        <td>
+            Автор публикации
+        </td>
+        <td>
+            Вид публикации
+        </td>
+        <td>
+            Время публикации
+        </td>
+        <td>
+            Категория
+        </td>
+        <td>
+            Заголовок публикации
+        </td>
+        <td>
+            Текст публикации
+        </td>
+        <td>
+            Рейтинг публикации
+        </td>
+    </tr>
+    <tr>
+        <td>
+            {{ post.author }}
+        </td>
+        <td>
+            {{ post.view }}
+        </td>
+        <td>
+            {{ post.time_of_creation|date:'d M Y' }}
+        </td>
+        <td>
+            {{ post.category }}
+        </td>
+        <td>
+            {{ post.title }}
+        </td>
+        <td>
+            {{ post.text }}
+        </td>
+        <td>
+            {{ post.post_rating }}
+        </td>
+    </tr>
+</table>
 {% endblock content %}

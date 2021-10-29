@@ -5,6 +5,37 @@ News
 {% endblock title %}
 
 {% block content %}
-<h1>Все новости</h1>
-{{ posts }}
+    <h1>Все публикации</h1>
+    <hr>
+<h3><p align="left">Всего публикаций: {{ posts|length }}</p></h3>
+    {% if posts %}
+      <table>
+          <tr>
+              <td>
+                  Заголовок
+              </td>
+              <td>
+                  Дата публикации
+              </td>
+              <td>
+                  Краткое содержание
+              </td>
+          </tr>
+      {% for post in posts %}
+          <tr>
+              <td>
+                  {{ post.title }}
+              </td>
+              <td>
+                  {{ post.time_of_creation|date:'d M Y'}}
+              </td>
+              <td>
+                  {{ post.text|truncatewords:20 }}
+              </td>
+          </tr>
+      {% endfor %}
+      </table>
+    {% else %}
+      <h2>Публикаций нет!</h2>
+    {% endif %}
 {% endblock content %}

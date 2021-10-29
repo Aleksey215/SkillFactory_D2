@@ -20,6 +20,9 @@ class Author(models.Model):
         self.author_rating = p_rat * 3 + c_rat
         self.save()
 
+    def __str__(self):
+        return f'{self.author_user}'
+
 
 class Category(models.Model):
     name = models.CharField(max_length=64, unique=True)
@@ -46,7 +49,7 @@ class Post(models.Model):
     post_rating = models.IntegerField(default=0)
 
     def __str__(self):
-        return f'{self.title.title()}: {self.text[:64]}'
+        return f'{self.title.title()}: {self.view}'
 
     def like(self,):
         self.post_rating += 1
