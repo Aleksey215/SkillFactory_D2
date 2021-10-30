@@ -1,5 +1,7 @@
 {% extends 'flatpages/default.html' %}
 
+{% load custom_filters %}
+
 {% block title %}
 News
 {% endblock title %}
@@ -38,16 +40,16 @@ News
             {{ post.view }}
         </td>
         <td>
-            {{ post.time_of_creation|date:'d M Y' }}
+            {{ post.time_of_creation }}
         </td>
         <td>
             {{ post.category }}
         </td>
         <td>
-            {{ post.title }}
+            {{ post.title|censor }}
         </td>
         <td>
-            {{ post.text }}
+            {{ post.text|censor }}
         </td>
         <td>
             {{ post.post_rating }}
