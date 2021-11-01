@@ -23,5 +23,5 @@ def censor(value):
     text = value.split()
     for word in text:
         if word.lower() in censor_list:
-            value = value.replace(word, 'censored')
+            value = value.replace(word, '[CENSORED]')
     return value

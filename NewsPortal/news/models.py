@@ -8,6 +8,10 @@ class Author(models.Model):
     author_user = models.OneToOneField(User, on_delete=models.CASCADE)
     author_rating = models.IntegerField(default=0)
 
+    class Meta:
+        verbose_name = 'Автор'
+        verbose_name_plural = 'Авторы'
+
     def update_rating(self):
         author_post_rating = self.post_set.aggregate(postRating=Sum('post_rating'))
         p_rat = 0
@@ -27,6 +31,10 @@ class Author(models.Model):
 class Category(models.Model):
     name = models.CharField(max_length=64, unique=True)
 
+    class Meta:
+        verbose_name = 'Категория'
+        verbose_name_plural = 'Категории'
+
     def __str__(self):
         return f'{self.name.title()}'
 
@@ -43,10 +51,14 @@ class Post(models.Model):
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
     view = models.CharField(max_length=2, choices=kind, default=article)
     time_of_creation = models.DateTimeField(auto_now_add=True)
-    category = models.ManyToManyField(Category, through='PostCategory')
+    category = models.ManyToManyField(Category) #through='PostCategory')
     title = models.CharField(max_length=128)
     text = models.TextField()
     post_rating = models.IntegerField(default=0)
+
+    class Meta:
+        verbose_name = 'Публикация'
+        verbose_name_plural = 'Публикации'
 
     def __str__(self):
         return f'{self.title.title()}: {self.view}'
@@ -67,6 +79,13 @@ class PostCategory(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
 
+    class Meta:
+        verbose_name = 'Категория публикации'
+        verbose_name_plural = 'Категории Публикаций'
+
+    def __str__(self):
+        return f'{self.post}, {self.category}'
+
 
 class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
@@ -74,6 +93,10 @@ class Comment(models.Model):
     text = models.TextField()
     time = models.DateTimeField(auto_now_add=True)
     comment_rating = models.IntegerField(default=0)
+
+    class Meta:
+        verbose_name = 'Комментарий'
+        verbose_name_plural = 'Комментарии'
 
     def like(self):
         self.comment_rating += 1
