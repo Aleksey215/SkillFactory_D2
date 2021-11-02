@@ -14,6 +14,8 @@ Search
     <form method="GET">
         {{ filter.form }}
         <input type="submit" value="Найти">
+            <label for="party">Укажите предпочтительную дату события:</label>
+    <input type="date" id="party" name="party" min="2021-01-01" max="2021-12-31">
     </form>
     <hr>
     {% if posts_search %}

@@ -6,4 +6,9 @@ class PostFilter(FilterSet):
 
     class Meta:
         model = Post
-        fields = ('time_of_creation', 'title', 'author', 'view')
+        fields = {
+            'time_of_creation': ['gte'],
+            'title': ['icontains'],
+            'author': ['exact'],
+        }
+        # fields = ('time_of_creation', 'title', 'author', 'view')
