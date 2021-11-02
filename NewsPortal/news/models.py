@@ -61,7 +61,7 @@ class Post(models.Model):
         verbose_name_plural = 'Публикации'
 
     def __str__(self):
-        return f'{self.title.title()}: {self.view}'
+        return f'{self.title.title()}: {self.get_view_display()}'
 
     def like(self,):
         self.post_rating += 1
