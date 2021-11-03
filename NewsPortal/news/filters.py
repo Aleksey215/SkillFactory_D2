@@ -7,6 +7,7 @@ class PostFilter(FilterSet):
     class Meta:
         model = Post
         fields = {
+            'post_category': ['exact'],
             'time_of_creation': ['gte'],
             'title': ['icontains'],
             'author': ['exact'],

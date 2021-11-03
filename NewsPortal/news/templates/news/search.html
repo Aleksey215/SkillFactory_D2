@@ -8,14 +8,17 @@ Search
 
 {% block content %}
     <h1>Поиск публикаций</h1>
-    <h3><p align="center">Всего публикаций на странице: {{ posts_search|length }}</p></h3>
+    <h3><p align="center">Всего публикаций: {{ posts_search|length }}</p></h3>
+    <p align="center">
+      <a href="{% url 'posts' %}">К списку публикаций</a> <br>
+    </p>
     <hr>
     <h4>Фильтры поиска</h4>
     <form method="GET">
         {{ filter.form }}
         <input type="submit" value="Найти">
-            <label for="party">Укажите предпочтительную дату события:</label>
-    <input type="date" id="party" name="party" min="2021-01-01" max="2021-12-31">
+<!--        <label for="party">Укажите предпочтительную дату события:</label>-->
+<!--        <input type="date" id="party" name="party" min="2021-01-01" max="2021-12-31">-->
     </form>
     <hr>
     {% if posts_search %}
@@ -29,6 +32,9 @@ Search
               </td>
               <td>
                   <b>Автор публикации</b>
+              </td>
+              <td>
+                  <b>Категория</b>
               </td>
               <td>
                   <b>Краткое содержание</b>
@@ -46,12 +52,15 @@ Search
                   {{ post.author }}
               </td>
               <td>
+                  {{ post.category }}
+              </td>
+              <td>
                   {{ post.text|truncatewords:20|censor }}
               </td>
           </tr>
       {% endfor %}
       </table>
-
+    <br>
     {% else %}
       <h2>Публикаций нет!</h2>
     {% endif %}

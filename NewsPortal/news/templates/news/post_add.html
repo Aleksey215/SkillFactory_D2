@@ -1,0 +1,63 @@
+{% extends 'flatpages/default.html' %}
+
+{% block title %}
+Post add
+{% endblock title %}
+
+{% block content %}
+<h3>Публикация</h3>
+<hr>
+<form method="POST">
+    {% csrf_token %}
+    <table>
+        <tr>
+            <td>
+                <p align="left">
+                <b>Заголовок</b>
+                {{ form.title }}
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p align="left">
+                <b>Содержание</b>
+                {{ form.text }}
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p align="left">
+                <b>Автор</b>
+                {{ form.author }}
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p align="left">
+                <b>Вид</b>
+                {{ form.view }}
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p align="left">
+                <b>Категория</b>
+                {{ form.post_category }}
+                </p>
+            </td>
+        </tr>
+    </table>
+    <br>
+    <p align="left">
+    <input type="submit" value="Добавить публикацию">
+    </p>
+</form>
+<br>
+<p align="center">
+      <a href="{% url 'posts' %}">К списку публикаций</a> <br>
+</p>
+{% endblock content %}

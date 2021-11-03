@@ -1,0 +1,62 @@
+{% extends 'flatpages/default.html' %}
+
+{% block title %}
+Post detail
+{% endblock title %}
+
+{% block content %}
+<h1>Подробная информация о публикации</h1>
+  <hr>
+<table>
+    <thead>
+        <th>
+            <b>Автор публикации</b>
+        </th>
+        <th>
+            <b>Тип публикации</b>
+        </th>
+        <th>
+            <b>Время публикации</b>
+        </th>
+        <th>
+            <b>Категория публикации</b>
+        </th>
+        <th>
+            <b>Заголовок публикации</b>
+        </th>
+        <th>
+            <b>Содержание публикации</b>
+        </th>
+        <th>
+            <b>Рейтинг публикации</b>
+        </th>
+    </thead>
+    <tr>
+        <td>
+            {{ post.author }}
+        </td>
+        <td>
+            {{ post.get_view_display}}
+        </td>
+        <td>
+            {{ post.time_of_creation }}
+        </td>
+        <td>
+            {{ post.post_category}}
+        </td>
+        <td>
+            {{ post.title }}
+        </td>
+        <td>
+            {{ post.text }}
+        </td>
+        <td>
+            {{ post.post_rating }}
+        </td>
+    </tr>
+</table>
+<br>
+<p align="center">
+      <a href="{% url 'posts' %}">К списку публикаций</a> <br>
+</p>
+{% endblock content %}

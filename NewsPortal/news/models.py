@@ -36,7 +36,7 @@ class Category(models.Model):
         verbose_name_plural = 'Категории'
 
     def __str__(self):
-        return f'{self.name.title()}'
+        return f'{self.name}'
 
 
 class Post(models.Model):
@@ -51,7 +51,7 @@ class Post(models.Model):
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
     view = models.CharField(max_length=2, choices=kind, default=article)
     time_of_creation = models.DateTimeField(auto_now_add=True)
-    category = models.ManyToManyField(Category, through='PostCategory')
+    post_category = models.ManyToManyField(Category, through='PostCategory')
     title = models.CharField(max_length=128)
     text = models.TextField()
     post_rating = models.IntegerField(default=0)
@@ -73,6 +73,9 @@ class Post(models.Model):
 
     def preview(self):
         return f'{self.text[:125]} + {"..."}'
+
+    def get_absolute_url(self):
+        return f'/posts/{self.id}'
 
 
 class PostCategory(models.Model):
