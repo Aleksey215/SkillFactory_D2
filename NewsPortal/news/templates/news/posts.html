@@ -8,10 +8,6 @@ News
 
 {% block content %}
   <h1>Все публикации</h1>
-  <p align="right">
-      <a href="{% url 'post_add' %}">Добавить новую публикацию</a><br>
-      <a href="{% url 'search' %}">Поиск</a><br>
-  </p>
   <hr>
   {% if posts %}
       <table>

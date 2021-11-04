@@ -1,8 +1,9 @@
-from django_filters import FilterSet
-from .models import Post
+from django_filters import FilterSet, DateFilter
+from .models import Post, PostCategory, Category
 
 
 class PostFilter(FilterSet):
+    time_of_creation = DateFilter
 
     class Meta:
         model = Post

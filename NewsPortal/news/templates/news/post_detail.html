@@ -39,7 +39,7 @@ Post detail
             {{ post.get_view_display}}
         </td>
         <td>
-            {{ post.time_of_creation }}
+            {{ post.time_of_creation|date:'d M Y' }}
         </td>
         <td>
             {{ post.post_category}}
@@ -56,7 +56,4 @@ Post detail
     </tr>
 </table>
 <br>
-<p align="center">
-      <a href="{% url 'posts' %}">К списку публикаций</a> <br>
-</p>
 {% endblock content %}
