@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .models import Post, PostCategory, Category
 from .filters import PostFilter
@@ -34,13 +35,13 @@ class PostDetailView(DetailView):
 
 
 # дженерик для создания объекта.
-class PostCreateView(CreateView):
+class PostCreateView(LoginRequiredMixin, CreateView):
     template_name = 'news/post_add.html'
     form_class = PostForm
 
 
 # дженерик для редактирования объекта
-class PostUpdateView(UpdateView):
+class PostUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'news/post_add.html'
     form_class = PostForm
 
