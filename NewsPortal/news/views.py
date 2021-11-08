@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 
 from .models import Post, PostCategory, Category
 from .filters import PostFilter
@@ -53,15 +53,17 @@ class PostDetailView(DetailView):
 
 
 # дженерик для создания объекта.
-class PostCreateView(LoginRequiredMixin, CreateView):
+class PostCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     template_name = 'news/post_add.html'
     form_class = PostForm
+    permission_required = ('news.add_post',)
 
 
 # дженерик для редактирования объекта
-class PostUpdateView(LoginRequiredMixin, UpdateView):
+class PostUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     template_name = 'news/post_add.html'
     form_class = PostForm
+    permission_required = ('news.change_post',)
 
     def get_object(self, **kwargs):
         id = self.kwargs.get('pk')
