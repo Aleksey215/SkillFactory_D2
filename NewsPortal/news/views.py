@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .models import Post, PostCategory, Category
@@ -7,9 +7,27 @@ from .filters import PostFilter
 from .forms import PostForm
 
 
+class IndexView(LoginRequiredMixin, TemplateView):
+    template_name = 'news/index.html'
+
+    def get_context_data(self, **kwargs):
+        # получили весь контекст из класса-родителя
+        context = super().get_context_data(**kwargs)
+        # добавили новую контекстную переменную is_no t_premium
+        context['is_not_authors'] = not self.request.user.groups.filter(name='authors').exists()
+        return context
+    # Чтобы ответить на вопрос, есть ли пользователь в группе, мы заходим в переменную запроса self.request
+#     Из этой переменной мы можем вытащить текущего пользователя. В поле groups хранятся все группы,
+#     в которых он состоит. Далее мы применяем фильтр к этим группам и ищем ту самую, имя которой premium.
+#     После чего проверяем, есть ли какие-то значения в отфильтрованном списке.
+#     Метод exists() вернет True, если группа premium в списке групп пользователя найдена, иначе — False.
+#     А нам нужно получить наоборот — True, если пользователь не находится в этой группе,
+#     поэтому добавляем отрицание not, и возвращаем контекст обратно.
+
+
 class PostList(ListView):
     model = Post
-    template_name = 'posts.html'
+    template_name = 'news/posts.html'
     context_object_name = 'posts'
     # queryset = Post.objects.order_by('-id')
     ordering = ['-id']
@@ -18,7 +36,7 @@ class PostList(ListView):
 
 class PostsSearch(ListView):
     model = Post
-    template_name = 'search.html'
+    template_name = 'news/search.html'
     context_object_name = 'posts_search'
     ordering = ['-time_of_creation']
 
