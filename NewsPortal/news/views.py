@@ -1,8 +1,9 @@
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.core.mail import send_mail
 
-from .models import Post, PostCategory, Category
+from .models import Post, Category
 from .filters import PostFilter
 from .forms import PostForm
 
@@ -23,6 +24,12 @@ class IndexView(LoginRequiredMixin, TemplateView):
 #     Метод exists() вернет True, если группа premium в списке групп пользователя найдена, иначе — False.
 #     А нам нужно получить наоборот — True, если пользователь не находится в этой группе,
 #     поэтому добавляем отрицание not, и возвращаем контекст обратно.
+
+
+class CategoryList(ListView):
+    model = Category
+    template_name = 'news/category_list.html'
+    context_object_name = 'categories'
 
 
 class PostList(ListView):

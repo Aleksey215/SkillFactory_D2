@@ -24,19 +24,19 @@ Search
        <table>
           <tr>
               <td>
-                  <b>Заголовок</b>
+                  <b>Заголовок &nbsp </b>
               </td>
               <td>
-                  <b>Дата публикации</b>
+                  <b> &nbsp Дата публикации &nbsp </b>
               </td>
               <td>
-                  <b>Автор публикации</b>
+                  <b> &nbsp Автор публикации &nbsp </b>
               </td>
               <td>
-                  <b>Категория</b>
+                  <b> &nbsp Категория &nbsp </b>
               </td>
               <td>
-                  <b>Краткое содержание</b>
+                  <b> &nbsp Краткое содержание &nbsp</b>
               </td>
           </tr>
       {% for post in filter.qs %}
@@ -51,7 +51,9 @@ Search
                   {{ post.author }}
               </td>
               <td>
-                  {{ post.post_category }}
+                  {% for category in post.post_category.all %}
+                  < {{ category }} >
+                  {% endfor %}
               </td>
               <td>
                   {{ post.text|truncatewords:20|censor }}

@@ -1,5 +1,5 @@
 from django_filters import FilterSet, DateFilter
-from .models import Post, PostCategory, Category
+from .models import Post, Category
 
 
 class PostFilter(FilterSet):
