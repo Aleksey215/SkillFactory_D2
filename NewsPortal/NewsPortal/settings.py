@@ -30,8 +30,12 @@ ALLOWED_HOSTS = ['127.0.0.1']
 
 
 # Application definition
+# Список установленных(подключенных) приложений
+# Каждый раз, при создании(использовании) нового(существующего) приложения, его нужно прописывать здесь
+# иначе джанго не обнаружит созданное(используемое) приложение
 
 INSTALLED_APPS = [
+    # Список приложений созданных по умолчанию
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -39,8 +43,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # Список пользовательских приложений, создается разработчиком
     'django.contrib.sites',
     'django.contrib.flatpages',
+    # news - основное приложение новостного портала
     'news',
     'django_filters',
     'allauth',
