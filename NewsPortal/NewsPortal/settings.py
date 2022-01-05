@@ -14,6 +14,7 @@ import os.path
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+# Постройте пути внутри проекта следующим образом: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -24,8 +25,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-v)!*+z++1n=g=g)9d9+o628rae)7k5dj=!x*v_74ary2tgjh5j'
 
 # SECURITY WARNING: don't run with debug turned on in production!
+# Включает режим отладки. Важно! При запуске реального проекта в работу
+# нужно отключать, прописав "False"
 DEBUG = True
 
+# Локальный адрес проекта
 ALLOWED_HOSTS = ['127.0.0.1']
 
 
@@ -41,7 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
+    'django.contrib.staticfiles',  # приложение для работы с "статическими файлами"(CSS, Java и т.д)
 
     # Список пользовательских приложений, создается разработчиком
     'django.contrib.sites',
@@ -56,6 +60,9 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
 ]
 
+# Идентификатор (целое число) текущего сайта в таблице базы данных django_site .
+# Может использоваться приложениями для связывания своих данных с определенными сайтами и,
+# таким образом, для управления контентом нескольких сайтов в единой базе данных.
 SITE_ID = 1
 
 MIDDLEWARE = [
@@ -72,9 +79,12 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'NewsPortal.urls'
 
+# Настройка шаблонов
+# параметр "DIRS" - настраивает путь к папке шаблона
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        # Задаем путь к папке с шаблонами, где джанго будет их искать
         'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -147,7 +157,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
-
+# URL, указывающий на каталог со статическими файлами
 STATIC_URL = '/static/'
 
 # Default primary key field type
@@ -155,6 +165,7 @@ STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# Настройка STATICFILES_DIRS указывает каталоги, которые проверяются на наличие статических файлов.
 STATICFILES_DIRS = [
     BASE_DIR/"static"
 ]

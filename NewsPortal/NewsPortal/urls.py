@@ -17,9 +17,15 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
+    # адрес админки
     path('admin/', admin.site.urls),
     path('pages/', include('django.contrib.flatpages.urls')),
+
+    # подключаем все адреса из файла urls, который создан в приложении news
+    # и добавляем их к posts/
     path('posts/', include('news.urls')),
     path('accounts/', include('allauth.urls')),
+    # подключаем все адреса из файла urls, который создан в приложении sign
+    # и добавляем их к sign/
     path('sign/', include('sign.urls'))
 ]

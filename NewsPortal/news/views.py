@@ -1,10 +1,25 @@
+"""
+В данном файле прописывается логика приложения.
+Суть представления(views) в джанго - это запрос ин-ии из модели в файле models и
+передача ее в шаблон(templates)
+
+После создания представлений, нужно указать адреса, по которым будут доступны представления.
+Для настройки адресов используется файл "urls.py" но не тот, который лежит в проекте, а тот
+что нужно создать в приложении и указать на него ссылкой из основного файла.
+"""
 from django.shortcuts import render
+# импорт дженериков для представлений.
+# дженерики - это элементы, которые позволяют визуализировать ин-ию из БД в браузере, при помощи HTML
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.core.mail import send_mail
 
+# Импорт пользовательских элементов:
+# модели - передают ин-ию из БД
 from .models import Post, Category
+# фильтров
 from .filters import PostFilter
+# форм
 from .forms import PostForm
 
 
@@ -26,9 +41,13 @@ class IndexView(LoginRequiredMixin, TemplateView):
 #     поэтому добавляем отрицание not, и возвращаем контекст обратно.
 
 
+# создаем представление
 class CategoryList(ListView):
+    # указываем модель из которой берем объекты
     model = Category
+    # указываем имя шаблона, в котором написан html для отображения объектов модели
     template_name = 'news/category_list.html'
+    # имя переменной, под которым будет передаваться объект в шаблон
     context_object_name = 'categories'
 
 
@@ -37,8 +56,8 @@ class PostList(ListView):
     template_name = 'news/posts.html'
     context_object_name = 'posts'
     # queryset = Post.objects.order_by('-id')
-    ordering = ['-id']
-    paginate_by = 10
+    ordering = ['-id']  # задаем последовательность отображения по id
+    paginate_by = 10  # задаем кол-во отображаемых объектов
 
 
 class PostsSearch(ListView):
@@ -47,26 +66,29 @@ class PostsSearch(ListView):
     context_object_name = 'posts_search'
     ordering = ['-time_of_creation']
 
+    # метод get_context_data нужен нам для того, чтобы мы могли передать переменные в шаблон.
+    # В возвращаемом словаре context будут храниться все переменные.
+    # Ключи этого словаря и есть переменные, к которым мы сможем потом обратиться через шаблон
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['filter'] = PostFilter(self.request.GET, queryset=self.get_queryset())
         return context
 
 
-# дженерик для отображения деталей объекта
+# представление для отображения деталей объекта (публикации)
 class PostDetailView(DetailView):
     template_name = 'news/post_detail.html'
     queryset = Post.objects.all()
 
 
-# дженерик для создания объекта.
+# представление для создания объекта.
 class PostCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     template_name = 'news/post_add.html'
     form_class = PostForm
     permission_required = ('news.add_post',)
 
 
-# дженерик для редактирования объекта
+# представление для редактирования объекта
 class PostUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     template_name = 'news/post_add.html'
     form_class = PostForm
@@ -77,7 +99,7 @@ class PostUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
         return Post.objects.get(pk=id)
 
 
-# дженерик для удаления товара
+# представление для удаления объекта
 class PostDeleteView(DeleteView):
     template_name = 'news/post_delete.html'
     queryset = Post.objects.all()
