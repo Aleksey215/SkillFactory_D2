@@ -13,20 +13,31 @@ from .views import PostList, PostsSearch, PostDetailView, \
 
 # создаем список всех url-адресов данного приложения
 # мысленно добавляем к каждому адресу: posts/ из главного файла
+# в переменной name указываем имя шаблона для визуализации
 urlpatterns = [
     # по пустому адресу мы получаем список публикаций как представление
     path('', PostList.as_view(), name='posts'),  # т. к. сам по себе это класс,
     # то нам надо представить этот класс в виде view. Для этого вызываем метод as_view
 
+    # адрес для поиска постов
     path('search/', PostsSearch.as_view(), name='search'),
 
     # адрес к конкретному объекту по его id или pk
     # pk — это первичный ключ товара, который будет выводиться у нас в шаблон
     path('<int:pk>/', PostDetailView.as_view(), name='post_detail'),
 
+    # адрес для добавления поста
     path('add/', PostCreateView.as_view(), name='post_add'),
+
+    # адрес для редактирования выбранного поста
     path('add/<int:pk>', PostUpdateView.as_view(), name='post_update'),
+
+    # адрес для удаления выбранного поста
     path('delete/<int:pk>', PostDeleteView.as_view(), name='post_delete'),
+
+    # адрес на личный кабинет пользователя
     path('profile/', IndexView.as_view()),
+
+    # адрес для просмотра категорий
     path('categories/', CategoryList.as_view(), name='categories')
 ]

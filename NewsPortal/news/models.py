@@ -141,6 +141,7 @@ class Post(models.Model):
     def preview(self):
         return f'{self.text[:125]} + {"..."}'
 
+    # добавим абсолютный путь, чтобы после создания нас перебрасывало на страницу с постом
     def get_absolute_url(self):
         return f'/posts/{self.id}'
 

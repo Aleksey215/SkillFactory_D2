@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'django.contrib.flatpages',
     # news - основное приложение новостного портала
     'news',
+    # приложение для подключения фильтров
     'django_filters',
     'allauth',
     'allauth.account',

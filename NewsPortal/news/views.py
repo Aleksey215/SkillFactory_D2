@@ -17,9 +17,11 @@ from django.core.mail import send_mail
 # Импорт пользовательских элементов:
 # модели - передают ин-ию из БД
 from .models import Post, Category
-# фильтров
+# фильтры - прописываются в файле filters.py
+# используются для отбора объектов по каким то критериям
 from .filters import PostFilter
-# форм
+# формы - прописываются в файле forms.py
+# используются для создания форм в браузере по модели
 from .forms import PostForm
 
 
@@ -57,9 +59,10 @@ class PostList(ListView):
     context_object_name = 'posts'
     # queryset = Post.objects.order_by('-id')
     ordering = ['-id']  # задаем последовательность отображения по id
-    paginate_by = 10  # задаем кол-во отображаемых объектов
+    paginate_by = 10  # задаем кол-во отображаемых объектов на странице
 
 
+# Представление, созданное для поиска объектов по фильтрам
 class PostsSearch(ListView):
     model = Post
     template_name = 'news/search.html'
@@ -71,19 +74,21 @@ class PostsSearch(ListView):
     # Ключи этого словаря и есть переменные, к которым мы сможем потом обратиться через шаблон
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['filter'] = PostFilter(self.request.GET, queryset=self.get_queryset())
+        context['filter'] = PostFilter(self.request.GET, queryset=self.get_queryset()) # вписываем наш фильтр в контекст
         return context
 
 
 # представление для отображения деталей объекта (публикации)
 class PostDetailView(DetailView):
     template_name = 'news/post_detail.html'
+    # получение информации об объекте из БД
     queryset = Post.objects.all()
 
 
 # представление для создания объекта.
 class PostCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     template_name = 'news/post_add.html'
+    # указываем класс формы, созданный в файле forms.py
     form_class = PostForm
     permission_required = ('news.add_post',)
 
@@ -91,9 +96,15 @@ class PostCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
 # представление для редактирования объекта
 class PostUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     template_name = 'news/post_add.html'
+    # форм класс нужен, чтобы получать доступ к форме через метод POST
     form_class = PostForm
     permission_required = ('news.change_post',)
 
+# !!!! редактирование и создание поста осуществляется в одном и том же шаблоне sample_app/product_create.html.
+# Для этого достаточно просто прописать класс формы в атрибутах класса (form_class = PostForm), не меняя при этом шаблон.
+
+    # метод get_object мы используем вместо queryset,
+    # чтобы получить информацию об объекте из БД, который мы собираемся редактировать
     def get_object(self, **kwargs):
         id = self.kwargs.get('pk')
         return Post.objects.get(pk=id)
@@ -102,7 +113,7 @@ class PostUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
 # представление для удаления объекта
 class PostDeleteView(DeleteView):
     template_name = 'news/post_delete.html'
-    queryset = Post.objects.all()
-    success_url = '/posts/'
+    queryset = Post.objects.all()  # получение ин-ии об объекте из БД
+    success_url = '/posts/'  # путь, по которому мы перейдем после удаления поста
 
 

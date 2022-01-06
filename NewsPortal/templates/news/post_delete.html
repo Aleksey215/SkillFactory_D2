@@ -1,12 +1,20 @@
+<!--Данный файл отображает страницу удаления постов
+Вся информация о посте берется из БД в файле views.py из представления для удаления-->
+
+<!--Наследование от главного файла-->
 {% extends 'default.html' %}
 
+<!--Написание заголовка-->
 {% block title %}
 Post delete
 {% endblock title %}
 
+<!--Описание содержания
+в таблице выводим всю ин-ию и прописали кнопку подтверждения-->
 {% block content %}
 <h2>Вы действительно хотите удалить данную публикацию?</h2>
 <hr>
+<!--В таблице выводим информацию о посте-->
 <table>
     <thead>
         <th>
@@ -32,6 +40,7 @@ Post delete
         </th>
     </thead>
     <br>
+    <!--Вывод полей модели-->
     <tr>
         <td>
             {{ post.author }}
@@ -43,7 +52,9 @@ Post delete
             {{ post.time_of_creation }}
         </td>
         <td>
-            {{ post.category }}
+            {% for category in post.post_category.all %}
+            < {{ category }} >
+            {% endfor %}
         </td>
         <td>
             {{ post.title }}
@@ -52,11 +63,12 @@ Post delete
             {{ post.text }}
         </td>
         <td>
-            {{ post.rating }}
+            {{ post.post_rating }}
         </td>
     </tr>
 </table>
 <br>
+<!--Реализация кнопки подтверждения-->
 <form method="POST">
     {% csrf_token %}
     <input type="submit" value="Подтвердить">
