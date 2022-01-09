@@ -41,9 +41,12 @@ ALLOWED_HOSTS = ['127.0.0.1']
 INSTALLED_APPS = [
     # Список приложений созданных по умолчанию
     'django.contrib.admin',
-    'django.contrib.auth',
+    'django.contrib.auth',  # приложение поддержки авторизации
     'django.contrib.contenttypes',
-    'django.contrib.sessions',
+    'django.contrib.sessions',  # управление сессиями.
+    # В обработке каждого запроса (переменная request) вы можете получить доступ к данным сессии
+    # (которые хранятся на сервере) и каким-то образом манипулировать ими.
+
     'django.contrib.messages',
     'django.contrib.staticfiles',  # приложение для работы с "статическими файлами"(CSS, Java и т.д)
 
@@ -54,10 +57,12 @@ INSTALLED_APPS = [
     'news',
     # приложение для подключения фильтров
     'django_filters',
+    # подключение приложений из "allauth"
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
     # ... include the providers you want to enable:
+    # Необходимо для реализации регистрации через провайдер "Google"
     'allauth.socialaccount.providers.google',
 ]
 
@@ -95,18 +100,22 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 # `allauth` needs this from django
-                'django.template.context_processors.request',
+                'django.template.context_processors.request',  # контекстный процессор, нужен для allauth.
             ],
         },
     },
 ]
 
+# Добавляем бэкенды аутентификации:
 AUTHENTICATION_BACKENDS = [
     # Needed to login by username in Django admin, regardless of `allauth`
+    # встроенный бэкенд Django, реализующий аутентификацию по username
     'django.contrib.auth.backends.ModelBackend',
 
     # `allauth` specific authentication methods, such as login by e-mail
+    # бэкенд аутентификации, предоставленный пакетом allauth
     'allauth.account.auth_backends.AuthenticationBackend',
+    # нам нужно «включить» аутентификацию как по username, так и специфичную по email или сервис-провайдеру.
 ]
 
 WSGI_APPLICATION = 'NewsPortal.wsgi.application'
@@ -171,14 +180,18 @@ STATICFILES_DIRS = [
     BASE_DIR/"static"
 ]
 
-LOGIN_URL = '/accounts/login/'
+LOGIN_URL = '/accounts/login/'  # страница аутентификации
 
-# LOGIN_REDIRECT_URL = '/'
+# LOGIN_REDIRECT_URL = '/'  # страница, на которую перенаправляется пользователь после успешного входа на сайт,
 
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_UNIQUE_EMAIL = True
-ACCOUNT_USERNAME_REQUIRED = False
-ACCOUNT_AUTHENTICATION_METHOD = 'email'
-ACCOUNT_EMAIL_VERIFICATION = 'none'
+
+# регистрация по электронной почте.
+# В файл настроек проекта мы должны внести дополнительные параметры:
+ACCOUNT_EMAIL_REQUIRED = True  # поле email - обязательно
+ACCOUNT_UNIQUE_EMAIL = True  # поле email - уникально
+ACCOUNT_USERNAME_REQUIRED = False  # поле username - не обязательно
+ACCOUNT_AUTHENTICATION_METHOD = 'email'  # аутентификация будет через почту
+ACCOUNT_EMAIL_VERIFICATION = 'none'  # верификация почту - отсутствует
+# После завершения этих настроек, мы должны заглянуть в файл конфигурации URL и внести изменения в нем
 
 ACCOUNT_FORMS = {'signup': 'sign.models.BasicSignupForm'}

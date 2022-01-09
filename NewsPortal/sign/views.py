@@ -1,16 +1,23 @@
+"""
+Данный файл отвечает за реализацию представлений приложения "sign",
+которое используется для регистрации и входа пользователей
+"""
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
+# Импортируем дженерик создания
 from django.views.generic.edit import CreateView
 from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required
 
+# импортируем нашу модель-форму для регистрации
 from .models import BaseRegisterForm
 
 
+# реализуем Create-дженерик.
 class BaseRegisterView(CreateView):
-    model = User
-    form_class = BaseRegisterForm
-    success_url = '/posts/profile'
+    model = User  # модель формы, которую реализует данный дженерик;
+    form_class = BaseRegisterForm  # форма, которая будет заполняться пользователем;
+    success_url = '/posts/profile'  # URL, на который нужно направить пользователя после успешного ввода данных в форму.
 
 
 @login_required

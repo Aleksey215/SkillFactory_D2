@@ -6,6 +6,13 @@
 После создания представлений, нужно указать адреса, по которым будут доступны представления.
 Для настройки адресов используется файл "urls.py" но не тот, который лежит в проекте, а тот
 что нужно создать в приложении и указать на него ссылкой из основного файла.
+
+Django поддерживает несколько разных видов представлений:
+1) Class-based views — представления, организованные в виде классов.
+2) Generic class-based views — часто используемые представления, которые Django предлагает в виде решения «из коробки».
+   Они реализуют в первую очередь функционал CRUD (Create Read Update Delete).
+3) Function-based views — представления в виде функций.
+
 """
 from django.shortcuts import render
 # импорт дженериков для представлений.
@@ -25,13 +32,16 @@ from .filters import PostFilter
 from .forms import PostForm
 
 
+# generic-представление для отображения шаблона,
+# унаследовав кастомный класс-представление от TemplateView и указав имя шаблона,
+# так же унаследовали это представление от миксина проверки аутентификации.
 class IndexView(LoginRequiredMixin, TemplateView):
     template_name = 'news/index.html'
 
     def get_context_data(self, **kwargs):
         # получили весь контекст из класса-родителя
         context = super().get_context_data(**kwargs)
-        # добавили новую контекстную переменную is_no t_premium
+        # добавили новую контекстную переменную is_not_authors
         context['is_not_authors'] = not self.request.user.groups.filter(name='authors').exists()
         return context
     # Чтобы ответить на вопрос, есть ли пользователь в группе, мы заходим в переменную запроса self.request
@@ -100,7 +110,7 @@ class PostUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     form_class = PostForm
     permission_required = ('news.change_post',)
 
-# !!!! редактирование и создание поста осуществляется в одном и том же шаблоне sample_app/product_create.html.
+# !!!! редактирование и создание поста осуществляется в одном и том же шаблоне news/post_add.html.
 # Для этого достаточно просто прописать класс формы в атрибутах класса (form_class = PostForm), не меняя при этом шаблон.
 
     # метод get_object мы используем вместо queryset,

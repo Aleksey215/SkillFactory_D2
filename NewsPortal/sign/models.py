@@ -1,4 +1,5 @@
 from django.db import models
+# базовая форма, позволяющая создать пользователя (в ней реализованы все валидации и проверки).
 from allauth.account.forms import SignupForm
 from django.contrib.auth.models import Group
 from django.contrib.auth.forms import UserCreationForm
@@ -8,10 +9,12 @@ from django import forms
 
 # Create your models here.
 class BaseRegisterForm(UserCreationForm):
+    # стандартные поля формы
     email = forms.EmailField(label="Email")
     first_name = forms.CharField(label="Имя")
     last_name = forms.CharField(label="Фамилия")
 
+    # Расширим эту форму, добавив другие значимые поля:
     class Meta:
         model = User
         fields = ("username",
