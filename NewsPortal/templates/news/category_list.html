@@ -5,7 +5,26 @@ Categories
 {% endblock title %}
 
 {% block content %}
-{% for category in categories %}
-{{category.name}}
-{% endfor %}
+<h1>Категории публикаций</h1>
+  <hr>
+<table>
+    <thead>
+    <th>
+        <b> Наименование &nbsp </b>
+    </th>
+    <th>
+        <b>  </b>
+    </th>
+    </thead>
+    {% for category in categories %}
+    <tr>
+        <td>
+            {{category.name}}
+        </td>
+        <td>
+            <a href="{% url 'post_add' %}">Подписаться</a><br>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
 {% endblock content %}

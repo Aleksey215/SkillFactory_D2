@@ -24,7 +24,7 @@ class BaseRegisterView(CreateView):
 def upgrade_me(request):
     # мы получили объект текущего пользователя из переменной запроса
     user = request.user
-    # Вытащили premium-группу из модели Group
+    # Вытащили author-группу из модели Group
     author_group = Group.objects.get(name='authors')
     # проверяем, находится ли пользователь в этой группе
     if not request.user.groups.filter(name='authors').exists():

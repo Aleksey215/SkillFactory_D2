@@ -100,7 +100,7 @@ class PostCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     template_name = 'news/post_add.html'
     # указываем класс формы, созданный в файле forms.py
     form_class = PostForm
-    permission_required = ('news.add_post',)
+    permission_required = ('news.add_post',)  # создание разрешения на создание
 
 
 # представление для редактирования объекта
@@ -108,7 +108,7 @@ class PostUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     template_name = 'news/post_add.html'
     # форм класс нужен, чтобы получать доступ к форме через метод POST
     form_class = PostForm
-    permission_required = ('news.change_post',)
+    permission_required = ('news.change_post',)  # создание разрешения на редактирование
 
 # !!!! редактирование и создание поста осуществляется в одном и том же шаблоне news/post_add.html.
 # Для этого достаточно просто прописать класс формы в атрибутах класса (form_class = PostForm), не меняя при этом шаблон.
@@ -121,8 +121,9 @@ class PostUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
 
 
 # представление для удаления объекта
-class PostDeleteView(DeleteView):
+class PostDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     template_name = 'news/post_delete.html'
+    permission_required = ('news.delete_post',)  # создания разрешения на удаление
     queryset = Post.objects.all()  # получение ин-ии об объекте из БД
     success_url = '/posts/'  # путь, по которому мы перейдем после удаления поста
 
