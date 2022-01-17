@@ -65,7 +65,7 @@ class Author(models.Model):
 class Category(models.Model):
     # имя категории - текстовое поле длинной не более 64 сим-ов и уникальное(unique)
     name = models.CharField(max_length=64, unique=True)
-    # subscribers = models.ForeignKey(User, on_delete=models.CASCADE)
+    subscribers = models.ManyToManyField(User, through='CategorySubscribers')
 
     # Внутренний класс (Мета класс), который используется для определения модели.
     class Meta:
@@ -79,6 +79,14 @@ class Category(models.Model):
     def __str__(self):
         # вывод имени категории в админке в формате "f-строки"
         return f'{self.name}'
+
+
+class CategorySubscribers(models.Model):
+    sub_categories = models.ForeignKey(Category, on_delete=models.CASCADE)
+    sub_user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.sub_categories}, {self.sub_users}'
 
 
 # создание сущности "Публикация" в БД

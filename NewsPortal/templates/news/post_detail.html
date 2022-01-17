@@ -51,9 +51,9 @@ Post detail
             {{ post.time_of_creation|date:'d M Y' }}
         </td>
         <td>
-            <!--В цикле выводим категории из списка-->
             {% for category in post.post_category.all %}
-            < {{ category }} >
+            <a href="{% url 'category_subscription' category.id %}"> < {{ category }} > </a>
+            <!--В цикле выводим категории из списка-->
             {% endfor %}
         </td>
         <td>

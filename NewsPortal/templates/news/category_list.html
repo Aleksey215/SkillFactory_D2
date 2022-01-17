@@ -10,7 +10,7 @@ Categories
 <table>
     <thead>
     <th>
-        <b> Наименование &nbsp </b>
+        <b> Категории &nbsp </b>
     </th>
     <th>
         <b>  </b>
@@ -19,12 +19,15 @@ Categories
     {% for category in categories %}
     <tr>
         <td>
-            {{category.name}}
+            {{category.name}} &nbsp <br>
         </td>
         <td>
-            <a href="{% url 'post_add' %}">Подписаться</a><br>
+            <a href="{% url 'category_subscription' category.id %}">Выбрать категорию</a><br>
         </td>
     </tr>
     {% endfor %}
 </table>
+
+<input type="submit" name="Подписаться">
+
 {% endblock content %}

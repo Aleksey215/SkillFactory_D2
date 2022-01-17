@@ -197,3 +197,10 @@ ACCOUNT_EMAIL_VERIFICATION = 'none'  # верификация почту - от�
 # После завершения этих настроек, мы должны заглянуть в файл конфигурации URL и внести изменения в нем
 
 ACCOUNT_FORMS = {'signup': 'sign.models.BasicSignupForm'}
+
+# Настройки для отправки писем с yandex smtp
+EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = 'kalosha21541'
+EMAIL_HOST_PASSWORD = 'Rfkjif21541'
+EMAIL_USE_SSL = True

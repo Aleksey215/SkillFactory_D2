@@ -14,16 +14,17 @@ Django поддерживает несколько разных видов пр�
 3) Function-based views — представления в виде функций.
 
 """
-from django.shortcuts import render
+from django.shortcuts import render, reverse, redirect
 # импорт дженериков для представлений.
 # дженерики - это элементы, которые позволяют визуализировать ин-ию из БД в браузере, при помощи HTML
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView, View
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.core.mail import send_mail
+from django.contrib.auth.decorators import login_required
 
 # Импорт пользовательских элементов:
 # модели - передают ин-ию из БД
-from .models import Post, Category
+from .models import Post, Category, CategorySubscribers
 # фильтры - прописываются в файле filters.py
 # используются для отбора объектов по каким то критериям
 from .filters import PostFilter
@@ -51,16 +52,6 @@ class IndexView(LoginRequiredMixin, TemplateView):
 #     Метод exists() вернет True, если группа premium в списке групп пользователя найдена, иначе — False.
 #     А нам нужно получить наоборот — True, если пользователь не находится в этой группе,
 #     поэтому добавляем отрицание not, и возвращаем контекст обратно.
-
-
-# создаем представление
-class CategoryList(ListView):
-    # указываем модель из которой берем объекты
-    model = Category
-    # указываем имя шаблона, в котором написан html для отображения объектов модели
-    template_name = 'news/category_list.html'
-    # имя переменной, под которым будет передаваться объект в шаблон
-    context_object_name = 'categories'
 
 
 class PostList(ListView):
@@ -126,5 +117,45 @@ class PostDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     permission_required = ('news.delete_post',)  # создания разрешения на удаление
     queryset = Post.objects.all()  # получение ин-ии об объекте из БД
     success_url = '/posts/'  # путь, по которому мы перейдем после удаления поста
+
+
+# создаем представление
+class CategoryList(ListView):
+    # указываем модель из которой берем объекты
+    model = Category
+    # указываем имя шаблона, в котором написан html для отображения объектов модели
+    template_name = 'news/category_list.html'
+    # имя переменной, под которым будет передаваться объект в шаблон
+    context_object_name = 'categories'
+
+
+class CategoryDetail(DetailView):
+    template_name = 'news/category_subscription.html'
+    model = Category
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        category_id = self.kwargs.get('pk')
+        category_subscribers = Category.objects.filter(pk=category_id).values("subscribers__username")
+        context['is_not_subscribe'] = not category_subscribers.filter(subscribers__username=self.request.user).exists()
+        context['is_subscribe'] = category_subscribers.filter(subscribers__username=self.request.user).exists()
+        return context
+
+
+@login_required
+def add_subscribe(request, **kwargs):
+    pk = request.GET.get('pk', )
+    print('Пользователь', request.user, 'добавлен в подписчики категории:', Category.objects.get(pk=pk))
+    Category.objects.get(pk=pk).subscribers.add(request.user)
+    return redirect('/posts/categories')
+
+
+@login_required
+def del_subscribe(request, **kwargs):
+    pk = request.GET.get('pk', )
+    print('Пользователь', request.user, 'удален из подписчиков категории:', Category.objects.get(pk=pk))
+    Category.objects.get(pk=pk).subscribers.remove(request.user)
+    return redirect('/posts/categories')
+
 
 

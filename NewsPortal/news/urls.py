@@ -9,7 +9,7 @@ from django.urls import path
 # Импортируем представления, написанные в файле "views.py"
 from .views import PostList, PostsSearch, PostDetailView, \
     PostCreateView, PostUpdateView, PostDeleteView, \
-    IndexView, CategoryList
+    IndexView, CategoryList, add_subscribe, del_subscribe, CategoryDetail
 
 # создаем список всех url-адресов данного приложения
 # мысленно добавляем к каждому адресу: posts/ из главного файла
@@ -39,5 +39,10 @@ urlpatterns = [
     path('profile/', IndexView.as_view()),
 
     # адрес для просмотра категорий
-    path('categories/', CategoryList.as_view(), name='categories')
+    path('categories/', CategoryList.as_view(), name='categories'),
+    path('categories/<int:pk>/add_subscribe/', add_subscribe, name='add_subscribe'),
+    path('categories/<int:pk>/del_subscribe/', del_subscribe, name='del_subscribe'),
+    path('categories/<int:pk>/', CategoryDetail.as_view(), name='category_subscription'),
+
+
 ]

@@ -65,7 +65,8 @@ News
               <td>
                   <!--В цикле выводим категории из списка-->
                   {% for category in post.post_category.all %}
-                  < {{ category }} >
+                  <a href="{% url 'category_subscription' category.id %}"> < {{ category }} > </a>
+                  <!--В цикле выводим категории из списка-->
                   {% endfor %}
               </td>
               <td>
