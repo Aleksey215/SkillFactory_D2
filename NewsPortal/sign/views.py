@@ -11,6 +11,7 @@ from django.contrib.auth.decorators import login_required
 
 # импортируем нашу модель-форму для регистрации
 from .models import BaseRegisterForm
+from news.models import Author
 
 
 # реализуем Create-дженерик.
@@ -30,4 +31,14 @@ def upgrade_me(request):
     if not request.user.groups.filter(name='authors').exists():
         # если он все-таки еще не в ней — смело добавляем.
         author_group.user_set.add(user)
+        Author.objects.create()
+    return redirect('/posts/profile/')
+
+
+@login_required
+def not_author(request):
+    user = request.user
+    authors_group = Group.objects.get(name='authors')
+    if request.user.groups.filter(name='authors').exists():
+        authors_group.user_set.remove(user)
     return redirect('/posts/profile/')

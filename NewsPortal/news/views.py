@@ -17,9 +17,10 @@ Django поддерживает несколько разных видов пр�
 from django.shortcuts import render, reverse, redirect
 # импорт дженериков для представлений.
 # дженерики - это элементы, которые позволяют визуализировать ин-ию из БД в браузере, при помощи HTML
+from django.template.loader import render_to_string
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView, View
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.core.mail import send_mail
+from django.core.mail import send_mail, EmailMultiAlternatives
 from django.contrib.auth.decorators import login_required
 
 # Импорт пользовательских элементов:
@@ -36,15 +37,15 @@ from .forms import PostForm
 # generic-представление для отображения шаблона,
 # унаследовав кастомный класс-представление от TemplateView и указав имя шаблона,
 # так же унаследовали это представление от миксина проверки аутентификации.
-class IndexView(LoginRequiredMixin, TemplateView):
-    template_name = 'news/index.html'
-
-    def get_context_data(self, **kwargs):
-        # получили весь контекст из класса-родителя
-        context = super().get_context_data(**kwargs)
-        # добавили новую контекстную переменную is_not_authors
-        context['is_not_authors'] = not self.request.user.groups.filter(name='authors').exists()
-        return context
+# class IndexView(LoginRequiredMixin, TemplateView):
+#     template_name = 'news/index.html'
+#
+#     def get_context_data(self, **kwargs):
+#         # получили весь контекст из класса-родителя
+#         context = super().get_context_data(**kwargs)
+#         # добавили новую контекстную переменную is_not_authors
+#         context['is_not_authors'] = not self.request.user.groups.filter(name='authors').exists()
+#         return context
     # Чтобы ответить на вопрос, есть ли пользователь в группе, мы заходим в переменную запроса self.request
 #     Из этой переменной мы можем вытащить текущего пользователя. В поле groups хранятся все группы,
 #     в которых он состоит. Далее мы применяем фильтр к этим группам и ищем ту самую, имя которой premium.
@@ -92,6 +93,49 @@ class PostCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     # указываем класс формы, созданный в файле forms.py
     form_class = PostForm
     permission_required = ('news.add_post',)  # создание разрешения на создание
+
+    def post(self, request, *args, **kwargs):
+        form = PostForm(request.POST)
+        post_category_pk = request.POST['post_category']
+        sub_text = request.POST.get('text')
+        sub_title = request.POST.get('title')
+        post_category = Category.objects.get(pk=post_category_pk)
+        subscribers = post_category.subscribers.all()
+        # получаем адрес хоста и порта (в нашем случае 127.0.0.1:8000), чтоб в дальнейшем указать его в ссылке
+        # в письме, чтоб пользователь мог с письма переходить на наш сайт, на конкретную новость
+        host = request.META.get('HTTP_HOST')
+
+        if form.is_valid():
+            news = form.save(commit=False)
+            news.save()
+            print('Статья:', news)
+
+        for subscriber in subscribers:
+            print('Адреса рассылки:', subscriber.email)
+
+            # (6)
+            # html_content = render_to_string(
+            #     'news/mail_sender.html', {'user': subscriber, 'text': sub_text[:50], 'post': news, 'host': host})
+            html_content = render_to_string(
+                'news/mail.html', {'user': subscriber, 'text': sub_text[:50], 'post': news, 'host': host}
+            )
+
+            # (7)
+            msg = EmailMultiAlternatives(
+                # Заголовок письма, тема письма
+                subject=f'Здравствуй, {subscriber.username}. Новая статья в вашем разделе!',
+                # Наполнение письма
+                body=f'{sub_text[:50]}',
+                # От кого письмо (должно совпадать с реальным адресом почты)
+                from_email='kalosha21541@yandex.ru',
+                # Кому отправлять, конкретные адреса рассылки, берем из переменной, либо можно явно прописать
+                to=[subscriber.email],
+            )
+
+            msg.attach_alternative(html_content, "text/html")
+            # print(html_content)
+            msg.send()
+            return redirect('/posts/')
 
 
 # представление для редактирования объекта

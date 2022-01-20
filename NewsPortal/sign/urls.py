@@ -8,7 +8,7 @@ from django.urls import path
 # (приложения sign в этом примере) импортировать его и вставить в urlpatterns:
 from django.contrib.auth.views import LoginView, LogoutView
 
-from .views import upgrade_me
+from .views import upgrade_me, not_author
 
 
 urlpatterns = [
@@ -20,5 +20,6 @@ urlpatterns = [
          # При выходе с сайта (вспоминаем кнопку, которую мы создали раньше в шаблоне index.html)
          # Django перенаправит пользователя на страницу, указанную в параметре template_name класса LogoutView.
          name='logout'),  # устанавливаем имена для этих URL в целях удобства обращения к ним из шаблонов
-    path('upgrade/', upgrade_me, name='upgrade')
+    path('upgrade_me/', upgrade_me, name='author'),
+    path('not_author/', not_author, name='not_author'),
 ]

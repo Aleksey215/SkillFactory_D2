@@ -25,6 +25,8 @@ urlpatterns = [
     # и добавляем их к posts/
     path('posts/', include('news.urls')),
 
+    path('', include('protect.urls')),
+
     # перенаправление на ‘accounts/’ для всех URL, которые будут управляться подключенным пакетом
     path('accounts/', include('allauth.urls')),
     # чтобы использовать этот пакет без дополнительных настроек как решение «из коробки»
