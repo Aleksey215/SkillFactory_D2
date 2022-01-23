@@ -59,9 +59,7 @@ Search
                   {{ post.author }}
               </td>
               <td>
-                  {% for category in post.post_category.all %}
-                  < {{ category }} >
-                  {% endfor %}
+                  {{ post.post_category }}
               </td>
               <td>
                   {{ post.text|truncatechars:50|censor }}

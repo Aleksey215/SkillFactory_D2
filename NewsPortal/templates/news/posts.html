@@ -63,11 +63,7 @@ News
                   <a href="{% url 'post_detail' post.id %}">{{ post.title|censor }}</a>
               </td>
               <td>
-                  <!--В цикле выводим категории из списка-->
-                  {% for category in post.post_category.all %}
-                  <a href="{% url 'category_subscription' category.id %}"> < {{ category }} > </a>
-                  <!--В цикле выводим категории из списка-->
-                  {% endfor %}
+                  <a href="{% url 'category_subscription' post.post_category.id %}"> < {{ post.post_category }} > </a>
               </td>
               <td>
                   <!--Выводим время создания поста, с фильтром-->

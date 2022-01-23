@@ -31,13 +31,14 @@ def upgrade_me(request):
     if not request.user.groups.filter(name='authors').exists():
         # если он все-таки еще не в ней — смело добавляем.
         author_group.user_set.add(user)
-        Author.objects.create()
+        Author.objects.create(author_user=user)
     return redirect('/posts/profile/')
 
 
 @login_required
 def not_author(request):
     user = request.user
+    user_id = request.user.pk
     authors_group = Group.objects.get(name='authors')
     if request.user.groups.filter(name='authors').exists():
         authors_group.user_set.remove(user)

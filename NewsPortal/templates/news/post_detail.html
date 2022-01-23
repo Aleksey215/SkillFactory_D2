@@ -51,10 +51,7 @@ Post detail
             {{ post.time_of_creation|date:'d M Y' }}
         </td>
         <td>
-            {% for category in post.post_category.all %}
-            <a href="{% url 'category_subscription' category.id %}"> < {{ category }} > </a>
-            <!--В цикле выводим категории из списка-->
-            {% endfor %}
+            <a href="{% url 'category_subscription' post.post_category.id %}"> < {{ post.post_category }} > </a>
         </td>
         <td>
             {{ post.title }}

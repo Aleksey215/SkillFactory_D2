@@ -185,7 +185,6 @@ STATICFILES_DIRS = [
 ]
 
 LOGIN_URL = '/accounts/login/'  # страница аутентификации
-
 # LOGIN_REDIRECT_URL = '/'  # страница, на которую перенаправляется пользователь после успешного входа на сайт,
 
 
@@ -204,5 +203,5 @@ ACCOUNT_FORMS = {'signup': 'sign.models.BasicSignupForm'}
 EMAIL_HOST = 'smtp.yandex.ru'
 EMAIL_PORT = 465
 EMAIL_HOST_USER = 'kalosha21541'
-EMAIL_HOST_PASSWORD = 'Rfkjif21541'
+EMAIL_HOST_PASSWORD = 'Rfkjifff21541'
 EMAIL_USE_SSL = True

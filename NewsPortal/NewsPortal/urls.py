@@ -34,5 +34,5 @@ urlpatterns = [
 
     # подключаем все адреса из файла urls, который создан в приложении sign
     # и добавляем их к sign/
-    path('sign/', include('sign.urls'))
+    path('sign/', include('sign.urls')),
 ]

@@ -97,10 +97,13 @@ class PostCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     def post(self, request, *args, **kwargs):
         form = PostForm(request.POST)
         post_category_pk = request.POST['post_category']
+        print(post_category_pk)
         sub_text = request.POST.get('text')
         sub_title = request.POST.get('title')
         post_category = Category.objects.get(pk=post_category_pk)
+        print(post_category)
         subscribers = post_category.subscribers.all()
+        print(subscribers)
         # получаем адрес хоста и порта (в нашем случае 127.0.0.1:8000), чтоб в дальнейшем указать его в ссылке
         # в письме, чтоб пользователь мог с письма переходить на наш сайт, на конкретную новость
         host = request.META.get('HTTP_HOST')
@@ -135,7 +138,8 @@ class PostCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
             msg.attach_alternative(html_content, "text/html")
             # print(html_content)
             msg.send()
-            return redirect('/posts/')
+            print(post_category)
+        return redirect('/posts/')
 
 
 # представление для редактирования объекта

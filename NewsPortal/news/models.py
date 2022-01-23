@@ -114,7 +114,7 @@ class Post(models.Model):
     time_of_creation = models.DateTimeField(auto_now_add=True)
     # поле "Категория публикации" - берется через связь Многие ко Многим из сущности "Категория"
     # через сущность "Публикация-Категория"
-    post_category = models.ManyToManyField(Category, through='PostCategory')
+    post_category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='Категория(category)')
     # поле "Заголовок" - текстовое с макс длинной=128 сим-ов
     title = models.CharField(max_length=128)
     # поле "Текст" - большое текстовое(содержание публикации)
@@ -153,25 +153,28 @@ class Post(models.Model):
     def get_absolute_url(self):
         return f'/posts/{self.id}'
 
+#-----------------------------------------------------------------------------------------------
 
 # создание сущности "Пост-Категория" в БД
 # является промежуточной таблицей для связи Многие ко Многим
 # между сущностью "Публикация" и "Категория"
-class PostCategory(models.Model):
-    # поле "Публикация" - берется через связь Один ко многим из сущности "Публикация"
-    post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    # поле "Категория" - берется через связь Один ко многим из сущности "Категория"
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+# class PostCategory(models.Model):
+#     # поле "Публикация" - берется через связь Один ко многим из сущности "Публикация"
+#     post = models.ForeignKey(Post, on_delete=models.CASCADE)
+#     # поле "Категория" - берется через связь Один ко многим из сущности "Категория"
+#     category = models.ForeignKey(Category, on_delete=models.CASCADE)
+#
+#     # Внутренний класс (Мета класс), который используется для определения модели.
+#     class Meta:
+#         # Настройка отображения имени модели в админ панели (ед число)
+#         verbose_name = 'Категория публикации'
+#         # Настройка отображения имени модели в админ панели (множ число)
+#         verbose_name_plural = 'Категории Публикаций'
+#
+#     def __str__(self):
+#         return f'{self.post}, {self.category}'
 
-    # Внутренний класс (Мета класс), который используется для определения модели.
-    class Meta:
-        # Настройка отображения имени модели в админ панели (ед число)
-        verbose_name = 'Категория публикации'
-        # Настройка отображения имени модели в админ панели (множ число)
-        verbose_name_plural = 'Категории Публикаций'
-
-    def __str__(self):
-        return f'{self.post}, {self.category}'
+#-----------------------------------------------------------------------------------------------
 
 
 # создание сущности "Комментарий" в БД

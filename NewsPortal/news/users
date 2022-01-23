@@ -27,6 +27,9 @@ XQGYjB5f4P3Gz24
 test_author1_user@example.com
 XQGYjB5f4P3Gz24
 
+gilwen2003@yandex.ru
+StakanLimonVon
+
 Добавьте пользователю возможность подписываться на рассылку
 новостей в какой-либо категории.
 Для этого добавьте поле subscribers (соотношение onetomany),
