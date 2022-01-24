@@ -70,6 +70,8 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
 ]
 
+DEFAULT_FROM_EMAIL = 'kalosha21541@yandex.ru'  # здесь указываем ПОЛНУЮ почту, с которой будут отправляться письма
+
 # Идентификатор (целое число) текущего сайта в таблице базы данных django_site .
 # Может использоваться приложениями для связывания своих данных с определенными сайтами и,
 # таким образом, для управления контентом нескольких сайтов в единой базе данных.
@@ -194,7 +196,7 @@ ACCOUNT_EMAIL_REQUIRED = True  # поле email - обязательно
 ACCOUNT_UNIQUE_EMAIL = True  # поле email - уникально
 ACCOUNT_USERNAME_REQUIRED = False  # поле username - не обязательно
 ACCOUNT_AUTHENTICATION_METHOD = 'email'  # аутентификация будет через почту
-ACCOUNT_EMAIL_VERIFICATION = 'none'  # верификация почту - отсутствует
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'  # верификация почту - отсутствует
 # После завершения этих настроек, мы должны заглянуть в файл конфигурации URL и внести изменения в нем
 
 ACCOUNT_FORMS = {'signup': 'sign.models.BasicSignupForm'}

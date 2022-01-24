@@ -52,9 +52,7 @@ Post delete
             {{ post.time_of_creation }}
         </td>
         <td>
-            {% for category in post.post_category.all %}
-            < {{ category }} >
-            {% endfor %}
+            < {{ post.post_category }} >
         </td>
         <td>
             {{ post.title }}
