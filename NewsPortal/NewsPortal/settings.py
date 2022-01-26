@@ -54,7 +54,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django.contrib.flatpages',
     # news - основное приложение новостного портала
-    'news',
+    'news.apps.NewsConfig',
 
     # приложение для идентификации, аутентификации и авторизации
     'sign',
