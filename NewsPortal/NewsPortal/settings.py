@@ -162,7 +162,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Vladivostok'
+# TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
@@ -189,21 +190,38 @@ STATICFILES_DIRS = [
 LOGIN_URL = '/accounts/login/'  # страница аутентификации
 # LOGIN_REDIRECT_URL = '/'  # страница, на которую перенаправляется пользователь после успешного входа на сайт,
 
-
 # регистрация по электронной почте.
 # В файл настроек проекта мы должны внести дополнительные параметры:
-ACCOUNT_EMAIL_REQUIRED = True  # поле email - обязательно
-ACCOUNT_UNIQUE_EMAIL = True  # поле email - уникально
-ACCOUNT_USERNAME_REQUIRED = False  # поле username - не обязательно
-ACCOUNT_AUTHENTICATION_METHOD = 'email'  # аутентификация будет через почту
-ACCOUNT_EMAIL_VERIFICATION = 'mandatory'  # верификация почту - отсутствует
-# После завершения этих настроек, мы должны заглянуть в файл конфигурации URL и внести изменения в нем
+# (1)
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
 
+# Чтобы allauth распознал нашу форму как ту, что должна выполняться вместо формы по умолчанию
 ACCOUNT_FORMS = {'signup': 'sign.models.BasicSignupForm'}
 
-# Настройки для отправки писем с yandex smtp
-EMAIL_HOST = 'smtp.yandex.ru'
-EMAIL_PORT = 465
-EMAIL_HOST_USER = 'kalosha21541'
-EMAIL_HOST_PASSWORD = 'Rfkjifff21541'
-EMAIL_USE_SSL = True
+# Модуль Д6 - настройка отправки почты
+EMAIL_HOST = 'smtp.yandex.ru'  # адрес сервера Яндекс-почты для всех один и тот же всегда
+EMAIL_PORT = 465  # порт smtp сервера тоже одинаковый всегда
+EMAIL_HOST_USER = 'kalosha21541'  # имя пользователя, например, если почта user@yandex.ru, то надо
+# писать user, иными словами, это всё то что идёт до собачки (@)
+EMAIL_HOST_PASSWORD = 'Rfkjifff21541' # пароль от почты
+EMAIL_USE_SSL = True  # Яндекс использует ssl, включать обязательно, защита от хакеров
+
+SERVER_EMAIL = 'kalosha21541@yandex.ru'  # это будет у нас вместо аргумента FROM в массовой рассылке
+
+# Модуль 6.3 - подтверждение регистрации через почту
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_AUTHENTIFICTION_METHOD = 'email'
+
+
+
+
+
+# (1)
+# Первые два указывают на то, что поле email является обязательным и уникальным, а третий, наоборот, говорит,
+# что username теперь необязательный. Следующий параметр указывает, что аутентификация будет происходить
+# посредством электронной почты. Напоследок мы указываем, что верификация почты отсутствует. Обычно на почту
+# отправляется подтверждение аккаунта, после подтверждения которого восстанавливается полная функциональность
+# учетной записи. Для тестового примера нам не обязательно это делать.
