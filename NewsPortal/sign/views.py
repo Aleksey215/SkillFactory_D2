@@ -32,7 +32,7 @@ def upgrade_me(request):
         # если он все-таки еще не в ней — смело добавляем.
         author_group.user_set.add(user)
         Author.objects.create(author_user=user)
-    return redirect('/accounts/profile/')
+    return redirect('/account/profile/')
 
 
 @login_required
@@ -45,4 +45,4 @@ def not_author(request):
     if request.user.groups.filter(name='authors').exists():
         authors_group.user_set.remove(user)
         author_delete.delete()
-    return redirect('/accounts/profile/')
+    return redirect('/account/profile/')

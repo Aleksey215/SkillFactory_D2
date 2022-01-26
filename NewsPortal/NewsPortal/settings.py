@@ -187,7 +187,7 @@ STATICFILES_DIRS = [
     BASE_DIR/"static"
 ]
 
-LOGIN_URL = '/accounts/login/'  # страница аутентификации
+LOGIN_URL = '/account/login/'  # страница аутентификации
 # LOGIN_REDIRECT_URL = '/'  # страница, на которую перенаправляется пользователь после успешного входа на сайт,
 
 # регистрация по электронной почте.
