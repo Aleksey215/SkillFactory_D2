@@ -24,6 +24,8 @@ from django.core.mail import EmailMultiAlternatives  # импортируем к
 from django.contrib.auth.decorators import login_required
 from django.db.models.signals import post_save  # импортируем сигнал, который будет срабатывать
                                                 # после сохранения объекта в базу данных
+from django.http import HttpResponse
+from datetime import datetime, timedelta
 
 # Импорт пользовательских элементов:
 # модели - передают ин-ию из БД
@@ -34,6 +36,7 @@ from .filters import PostFilter
 # формы - прописываются в файле forms.py
 # используются для создания форм в браузере по модели
 from .forms import PostForm
+from .tasks import hello, printer  # Trial
 
 
 # Класс-представление для отображения списка постов
@@ -223,6 +226,29 @@ def del_subscribe(request, **kwargs):
     Category.objects.get(pk=pk).subscribers.remove(request.user)
     # возвращаемся на страницу со списком категорий
     return redirect('/posts/categories')
+
+
+class IndexView(View):
+    def get(self, request):
+        # printer.delay(10)
+        # printer.apply_async([10], countdown=5)  # Параметр countdown устанавливает время (в секундах),
+                                                # через которое задача должна начать выполняться.
+        # для реализации того же самого сдвига на 5 секунд мы можем получить текущее время и добавить timedelta,
+        # равное 5 секундам, чтобы получить datetime-объект момента через 5 секунд от текущего.
+        printer.apply_async([10],
+                            eta=datetime.now() + timedelta(seconds=5))
+        hello.delay()
+        return HttpResponse('Hello!')
+
+
+
+
+
+
+
+
+
+
 
 # (7)
 # способ отправки писем с разным содержимым, то есть по мимо текста можно отправить например
