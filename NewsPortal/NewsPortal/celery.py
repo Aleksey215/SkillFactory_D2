@@ -15,3 +15,11 @@ app.config_from_object('django.conf:settings', namespace='CELERY')
 # Указываем Celery автоматически искать задания в файлах "tasks.py" каждого приложения проекта
 app.autodiscover_tasks()
 
+app.conf.beat_schedule = {
+    'print_every_5_seconds': {
+        'task': 'news.tasks.printer',
+        'schedule': 5,
+        'args': (5,),
+    },
+}
+
